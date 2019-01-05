@@ -1,0 +1,25 @@
+x = 0
+y = canvas.h - block.h
+
+for ground, check collision against Y
+
+x
+y
+w = # drawn
+h = sprite
+draw()
+
+
+for (i = 0; i < canvas.width; i += blockObj.width) {
+	draw() @ i
+}
+
+new Platform(x, y, sprite, numDraw) {
+{
+
+** Constructor function to create platforms/ground. **
+
+
+        var randX = Math.floor(Math.random() * canvas.width);
+        var randY = Math.floor(Math.random() * canvas.height);
+        var randLength = Math.floor(Math.random() * 10);
