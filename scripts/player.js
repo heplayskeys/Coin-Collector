@@ -86,7 +86,7 @@ function createPlayer(s) {
 					}
 					else {
 						// start over when we reach the end of the walking frames
-						this.frameX = 1;
+						this.frameX = 0;
 					}
 				}
 				// stopped

@@ -56,6 +56,7 @@ var blueFormImage = loadImg('images/blue.png');
 var orangeFormImage = loadImg('images/orange.png');
 var greyFormImage = loadImg('images/grey.png');
 var slowFormImage = loadImg('images/slow.png');
+var coinSprite = loadImg('images/coins.png');
 
 // draw everything
 function render() {	
@@ -66,10 +67,28 @@ function render() {
 	// draw the platforms
 	for (i = 0; i < blocks.length; i++) {
         blocks[i].draw();
-    }
+	}
+	
+	for (i = 0; i < coins.length; i++) {
+		coins[i].draw();
+	}
 	
 	// draw the player on top
     player.draw();
     
-    ground.draw();
+	ground.draw();
+
+	// Score
+	ctx.fillStyle = "rgb(0, 0, 0)";
+	ctx.font = "24px Helvetica";
+	ctx.textAlign = "left";
+	ctx.textBaseline = "top";
+	ctx.fillText("Coins: " + score, 20, 20);
+
+	// Timer
+	ctx.fillStyle = "rgb(0, 0, 0)";
+	ctx.font = "24px Helvetica";
+	ctx.textAlign = "right";
+	ctx.textBaseline = "top";
+	ctx.fillText("Time: " + countdown, 780, 20);
 }

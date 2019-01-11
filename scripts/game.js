@@ -3,12 +3,14 @@ var player;
 
 // the platforms
 var platforms = new Array;
-
-// var orangeForms = new Array;
-// var blueForms = new Array;
-
 var blocks = new Array;
-
+var coins = new Array;
+var coinCnt = 0;
+var coinInt;
+var blockRandom = new Array;
+var score = 0;
+var time = 0;
+var countdown = 10;
 var ground;
 
 // array to store all key presses
@@ -69,17 +71,17 @@ function init() {
 		];
 
 		var randLength = Math.floor(Math.random() * 12) + 1;
-		var rX = Math.floor(Math.random() * (canvas.width - (100 + randLength * 16)));
+		var rX = Math.floor(Math.random() * (canvas.width - (200 + randLength * 16))) + 100;
 		var rW = randLength * 16;
 		var rY = Math.floor(Math.random() * (canvas.height - 112));
 		var randBlock = Math.floor(Math.random() * typeBlock.length);
 		var height = 16;
-
-		console.log(rY);
+		var xPadding = 25;
+		var yPadding = 40;
 		
 		for (var j = 0; j < blocks.length; j++) {
 
-			if ((rX < blocks[j].x + blocks[j].width) && (rX + rW > blocks[j].x) && (rY + height > blocks[j].y) && (rY < blocks[j].y + blocks[j].height)) {
+			if ((rX - xPadding <= blocks[j].x + blocks[j].width) && (rX + rW + xPadding >= blocks[j].x) && (rY + height + yPadding >= blocks[j].y) && (rY - yPadding <= blocks[j].y + blocks[j].height)) {
 				overlap = true;
 			}
 		}
@@ -88,16 +90,15 @@ function init() {
 			i--;
 			continue;
 		}
-
-		if (rX < 100) {
-			rX = 100;
-		}
         
 		blocks.push(new Platform(rX, rY, typeBlock[randBlock].sprite, randLength, typeBlock[randBlock].type));        
-	} 
+	}
+	
+	showCoins();
 
 	// start game engine
 	setInterval(main, 17);
+	setInterval(gameTimer, 1000);
 }
 
 // GAME ENGINE
@@ -111,6 +112,8 @@ function main() {
 
 // update game logic
 function update() {
+
+	time += 17;
 	// update player position
 	player.update();
 	
@@ -159,7 +162,31 @@ function update() {
 				player.velocity = 0;
 			}
         }
-    }
+	}
+	
+	for (i = 0; i < coins.length; i++) {
+		
+		// Check for Coin Collision
+		if ((player.x <= coins[i].x + coins[i].width) && (player.x + player.width >= coins[i].x) && (player.y + player.height >= coins[i].y) && (player.y <= coins[i].y + coins[i].height)) {
+		
+			// Remove Collected Coin
+			coins.splice(i, 1);
+			console.log(coins);
+
+			// Increase Coin Score
+			score++;
+			coinCnt--;
+			countdown++;
+
+			console.log("COLLECTING: " + coinCnt);
+
+			if (coinCnt === 0) {
+				showCoins();
+			}
+
+			break;
+		}
+	}
 			
     if (player.y + player.height > ground.position) {
     
@@ -168,6 +195,61 @@ function update() {
         player.jumping = false;
         player.velocity = 0;
         player.speed = 3;
-        player.jumpPower = 14;
-    }
+		player.jumpPower = 14;
+		
+		// reset();
+	}
+	
+	if (time > 10000) {
+		showCoins();
+	}
+
+	if (countdown === 0) {
+		stopTime();
+	}
+}
+
+// Populate Coins Array
+function showCoins() {
+
+	time = 0;
+	coinCnt = 3;
+	coins = [];
+	blockRandom = [];
+
+	for (let i = 0; i < 3; i++) {
+
+		var blockNum = Math.floor(Math.random() * 6) + 1;
+
+		if (blockRandom.length === 0 || blockRandom.indexOf(blockNum) === -1) {
+			blockRandom.push(blockNum);
+			coins.push(new Coin(blocks[blockRandom[i]], coinSprite));
+		}
+		else {
+			i--;
+			continue;
+		}
+	}
+}
+
+function gameTimer() {
+	countdown--;
+}
+
+function stopTime() {
+	clearInterval(gameCount);
+}
+
+function reset() {
+	// score = 0;
+	// platforms = [];
+	// blocks = [];
+	// coins = [];
+	// player.jumping = false;
+	// player.velocity = 0;
+	// player.speed = 3;
+	// player.jumpPower = 14;
+
+	// init();
+	// location.reload();
 }
