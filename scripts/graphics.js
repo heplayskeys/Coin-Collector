@@ -57,6 +57,7 @@ var orangeFormImage = loadImg('images/orange.png');
 var greyFormImage = loadImg('images/grey.png');
 var slowFormImage = loadImg('images/slow.png');
 var coinSprite = loadImg('images/coins.png');
+var fireSprite = loadImg('images/fire13.png');
 
 // draw everything
 function render() {	
@@ -76,7 +77,7 @@ function render() {
 	// draw the player on top
     player.draw();
     
-	ground.draw();
+	fireGround.draw();
 
 	// Score
 	ctx.fillStyle = "rgb(0, 0, 0)";

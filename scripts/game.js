@@ -10,8 +10,10 @@ var coinInt;
 var blockRandom = new Array;
 var score = 0;
 var time = 0;
+var timer;
+var runGame;
 var countdown = 10;
-var ground;
+var fireGround;
 
 // array to store all key presses
 var keysDown = new Array;
@@ -25,7 +27,7 @@ addEventListener("keydown", function (e) {
 	keysDown[e.keyCode] = true;
 	
 	// disable scrolling when these buttons are pushed
-    if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+    if ([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
         e.preventDefault();
     }
 }, false);
@@ -39,7 +41,7 @@ addEventListener("keyup", function (e) {
 // initialize the game
 function init() {
 
-    ground = createGround(groundImage);
+    fireGround = createFire(fireSprite);
 
 	// set up player
 	player = createPlayer(spriteSheet); // player.js
@@ -47,58 +49,12 @@ function init() {
 	
 	blocks.push(new Platform((canvas.width/2) - 48, canvas.height - 112, startImage, 1, "start"));
 
-	// set up platforms (4 total)
-	for (var i = 0; i < 7; i++) {
-
-		var overlap = false;
-		var typeBlock = [
-			{
-				sprite: greyFormImage,
-				type: "neutral"
-			},
-			{
-				sprite: orangeFormImage,
-				type: "speedBoost"
-			},
-			{
-				sprite: blueFormImage,
-				type: "bounce"
-			},
-			{
-				sprite: slowFormImage,
-				type: "slow"
-			}
-		];
-
-		var randLength = Math.floor(Math.random() * 12) + 1;
-		var rX = Math.floor(Math.random() * (canvas.width - (200 + randLength * 16))) + 100;
-		var rW = randLength * 16;
-		var rY = Math.floor(Math.random() * (canvas.height - 112));
-		var randBlock = Math.floor(Math.random() * typeBlock.length);
-		var height = 16;
-		var xPadding = 25;
-		var yPadding = 40;
-		
-		for (var j = 0; j < blocks.length; j++) {
-
-			if ((rX - xPadding <= blocks[j].x + blocks[j].width) && (rX + rW + xPadding >= blocks[j].x) && (rY + height + yPadding >= blocks[j].y) && (rY - yPadding <= blocks[j].y + blocks[j].height)) {
-				overlap = true;
-			}
-		}
-
-		if (overlap || rY < 80) {
-			i--;
-			continue;
-		}
-        
-		blocks.push(new Platform(rX, rY, typeBlock[randBlock].sprite, randLength, typeBlock[randBlock].type));        
-	}
-	
+	showPlatforms();
 	showCoins();
 
 	// start game engine
-	setInterval(main, 17);
-	setInterval(gameTimer, 1000);
+	runGame = setInterval(main, 17);
+	timer = setInterval(gameTimer, 1000);
 }
 
 // GAME ENGINE
@@ -188,23 +144,30 @@ function update() {
 		}
 	}
 			
-    if (player.y + player.height > ground.position) {
-    
-        player.y = ground.position - player.height;
-        
+    if (player.y + player.height > fireGround.y + 16) {
+            
         player.jumping = false;
         player.velocity = 0;
         player.speed = 3;
 		player.jumpPower = 14;
-		
-		// reset();
+		player.x = canvas.width/2 - 25/2;
+		player.y = canvas.height - 150;
+
+		score -= coinCnt;
+
+		if (score < 0) {
+			score = 0;
+		}
+
+		blocks.splice(1);
+		showPlatforms();
 	}
 	
 	if (time > 10000) {
 		showCoins();
 	}
 
-	if (countdown === 0) {
+	if (countdown <= 0) {
 		stopTime();
 	}
 }
@@ -232,24 +195,74 @@ function showCoins() {
 	}
 }
 
+function showPlatforms() {
+
+	// set up platforms (7 total)
+	for (var i = 0; i < 7; i++) {
+
+		var overlap = false;
+		var typeBlock = [
+			{
+				sprite: greyFormImage,
+				type: "neutral"
+			},
+			{
+				sprite: orangeFormImage,
+				type: "speedBoost"
+			},
+			{
+				sprite: blueFormImage,
+				type: "bounce"
+			},
+			{
+				sprite: slowFormImage,
+				type: "slow"
+			}
+		];
+
+		var randLength = Math.floor(Math.random() * 12) + 1;
+		var rX = Math.floor(Math.random() * (canvas.width - (200 + randLength * 16))) + 100;
+		var rW = randLength * 16;
+		var rY = Math.floor(Math.random() * (canvas.height - 112));
+		var randBlock = Math.floor(Math.random() * typeBlock.length);
+		var height = 16;
+		var xPadding = 25;
+		var yPadding = 40;
+		
+		for (var j = 0; j < blocks.length; j++) {
+
+			if ((rX - xPadding <= blocks[j].x + blocks[j].width) && (rX + rW + xPadding >= blocks[j].x) && (rY + height + yPadding >= blocks[j].y) && (rY - yPadding <= blocks[j].y + blocks[j].height)) {
+				overlap = true;
+			}
+		}
+
+		if (overlap || rY < 80) {
+			i--;
+			continue;
+		}
+        
+		blocks.push(new Platform(rX, rY, typeBlock[randBlock].sprite, randLength, typeBlock[randBlock].type));    
+	}
+
+	showCoins();
+}
+
 function gameTimer() {
 	countdown--;
 }
 
 function stopTime() {
-	clearInterval(gameCount);
-}
+	clearInterval(timer);
+	clearInterval(runGame);
 
-function reset() {
-	// score = 0;
-	// platforms = [];
-	// blocks = [];
-	// coins = [];
-	// player.jumping = false;
-	// player.velocity = 0;
-	// player.speed = 3;
-	// player.jumpPower = 14;
+	$("#gameOver").modal("toggle");
+	$("#numCoins").css("color", "red").text(score);
 
-	// init();
-	// location.reload();
+	$("#exit").on("click", () => {
+		window.close();
+	});
+
+	$("#tryAgain").on("click", () => {
+		location.reload();
+	});
 }

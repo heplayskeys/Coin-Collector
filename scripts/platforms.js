@@ -29,3 +29,33 @@ function Platform(x, y, sprite, length, type) {
         }
     }
 }
+
+function createFire(sprite) {
+    return {
+        sprite: sprite,
+        y: canvas.height - 32,
+        width: 32,
+        height: 32,
+        frameX: 0,
+        delay: 0,
+        draw: function() {
+
+            this.delay++;
+            
+            if (this.delay > 6) {
+                this.delay = 0;
+                
+                if (this.frameX < 5) {
+                    this.frameX++
+                }
+                else {
+                    this.frameX = 0;
+                }
+            }
+
+            for (let i = 0; i < canvas.width; i += this.width) {
+                ctx.drawImage(this.sprite, this.frameX * this.width, 0, this.width, this.height, i, this.y, this.width, this.height);
+            }
+        }
+    }
+}
