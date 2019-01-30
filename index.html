@@ -52,22 +52,23 @@
 <body>
     <canvas id="game"></canvas>
 
-    
     <!-- Game Start Modal -->
     <div id="gameStart" class="modal fade modal-lg" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-body text-center startGame">
-                <h4>Welcome!</h4>
+            <div class="modal-body text-center startGame" style="padding: 16px 0">
+                <h4 style="margin-bottom: 1.25rem">Welcome to My Canvas Game!</h4>
                 <p>Collect coins to earn <strong>points </strong>&<strong> time</strong>! Don't fall!</p>
-                <hr/>
-                <p>
-                    <label for="playerName">Name:</label>
+                <br/>
+                <div>
+                <p style="margin: 0">
+                    <label for="playerName"><strong>Name:</strong></label>
                     <input type="text" id="playerName" maxlength="10" placeholder="Enter Your Name" style="padding: 2px"/>
                 </p>
+                </div>
             </div>
             <div class="modal-footer">
-            <button id="startGame" type="button" class="btn btn-success">Play</button>
+            <button id="startGame" type="button" class="btn btn-success" style="width: 100%; font-size: 1.25rem; font-weight: bold">Play</button>
             </div>
         </div>
         </div>

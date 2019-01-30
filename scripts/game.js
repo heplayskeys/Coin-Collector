@@ -14,6 +14,15 @@ var timer;
 var runGame;
 var countdown = 10;
 var fireGround;
+var highScores = [];
+
+var storedScores = localStorage.getItem("highScores");
+
+if (storedScores) {
+	highScores = JSON.parse(storedScores);
+}
+
+console.log(highScores);
 
 // array to store all key presses
 var keysDown = new Array;
@@ -157,7 +166,7 @@ function update() {
     if (player.y + player.height > fireGround.y + 16) {
 
 		// Populate Particles Array
-		for (let i = 0; i < 25; i++) {
+		for (let i = 0; i < 40; i++) {
 			particles.push(new Particle(player.x, player.y, randomColor[Math.floor(Math.random() * randomColor.length)]));
 		}
             
@@ -183,7 +192,7 @@ function update() {
 	}
 
 	if (countdown <= 0) {
-		stopTime();
+		endGame();
 	}
 }
 
@@ -266,55 +275,27 @@ function gameTimer() {
 	countdown--;
 }
 
-function stopTime() {
+function endGame() {
 	clearInterval(timer);
 	clearInterval(runGame);
 
-	if (score > localStorage.getItem("hs1") || localStorage.getItem("hs1") === null) {
+	highScores.push({numCoins: score, playerName: localStorage.getItem("playerName")});
 
-		if (localStorage.getItem("hs1") !== null || localStorage.getItem("hn1") !== null) {
-			localStorage.setItem(("hs2"), localStorage.getItem("hs1"));
-			localStorage.setItem(("hn2"), localStorage.getItem("hn1"));
-		}
+	highScores.sort(function(a, b){return b.numCoins - a.numCoins});
+	
+	localStorage.setItem("highScores", JSON.stringify(highScores));
+	localStorage.setItem("Score", score);
 
-		localStorage.setItem(("hn1"), localStorage.getItem("playerName"));
-		localStorage.setItem("hs1", score);
+	$("#hs1Name").text(highScores[0].playerName);
+	$("#hs1Score").text(highScores[0].numCoins);
 
-		$("#hs1Name").text(localStorage.getItem("hn1"));
-		$("#hs1Score").text(localStorage.getItem("hs1"));
-		$("#hs2Name").text(localStorage.getItem("hn2"));
-		$("#hs2Score").text(localStorage.getItem("hs2"));
-		$("#hs3Name").text(localStorage.getItem("hn3"));
-		$("#hs3Score").text(localStorage.getItem("hs3"));
+	if (highScores[1] !== undefined) {
+		$("#hs2Name").text(highScores[1].playerName);
+		$("#hs2Score").text(highScores[1].numCoins);
 	}
-	else if (score > localStorage.getItem("hs2") || localStorage.getItem("hs2") === null) {
-
-		if (localStorage.getItem("hs2") !== null || localStorage.getItem("hn2") !== null) {
-			localStorage.setItem(("hs3"), localStorage.getItem("hs2"));
-			localStorage.setItem(("hn3"), localStorage.getItem("hn2"));
-		}
-
-		localStorage.setItem(("hn2"), localStorage.getItem("playerName"));
-		localStorage.setItem("hs2", score);
-
-		$("#hs1Name").text(localStorage.getItem("hn1"));
-		$("#hs1Score").text(localStorage.getItem("hs1"));
-		$("#hs2Name").text(localStorage.getItem("hn2"));
-		$("#hs2Score").text(localStorage.getItem("hs2"));
-		$("#hs3Name").text(localStorage.getItem("hn3"));
-		$("#hs3Score").text(localStorage.getItem("hs3"));
-	}
-	else if (score > localStorage.getItem("hs3") || localStorage.getItem("hs3") === null) {
-
-		localStorage.setItem("hs3", score);
-		localStorage.setItem(("hn3"), localStorage.getItem("playerName"));
-
-		$("#hs1Name").text(localStorage.getItem("hn1"));
-		$("#hs1Score").text(localStorage.getItem("hs1"));
-		$("#hs2Name").text(localStorage.getItem("hn2"));
-		$("#hs2Score").text(localStorage.getItem("hs2"));
-		$("#hs3Name").text(localStorage.getItem("hn3"));
-		$("#hs3Score").text(localStorage.getItem("hs3"));
+	if (highScores[2] !== undefined) {
+		$("#hs3Name").text(highScores[2].playerName);
+		$("#hs3Score").text(highScores[2].numCoins);
 	}
 
 	$("#gameOver").modal("toggle");
