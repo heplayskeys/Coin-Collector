@@ -15,20 +15,6 @@ var runGame;
 var countdown = 10;
 var fireGround;
 
-function getScores() {
-
-	$("#hs1Name").text(localStorage.getItem("hn1"));
-	$("#hs2Name").text(localStorage.getItem("hn2"));
-	$("#hs3Name").text(localStorage.getItem("hn3"));
-
-	$("#hs1Score").text(localStorage.getItem("hs1"));
-	$("#hs2Score").text(localStorage.getItem("hs2"));
-	$("#hs3Score").text(localStorage.getItem("hs3"));
-
-	var highNames = [localStorage.getItem("hn1"), localStorage.getItem("hn2"), localStorage.getItem("hn3")];
-	var highScores = [localStorage.getItem("hs1"), localStorage.getItem("hs2"), localStorage.getItem("hs3")];
-}
-
 // array to store all key presses
 var keysDown = new Array;
 
@@ -284,8 +270,62 @@ function stopTime() {
 	clearInterval(timer);
 	clearInterval(runGame);
 
+	if (score > localStorage.getItem("hs1") || localStorage.getItem("hs1") === null) {
+
+		if (localStorage.getItem("hs1") !== null || localStorage.getItem("hn1") !== null) {
+			localStorage.setItem(("hs2"), localStorage.getItem("hs1"));
+			localStorage.setItem(("hn2"), localStorage.getItem("hn1"));
+		}
+
+		localStorage.setItem(("hn1"), localStorage.getItem("playerName"));
+		localStorage.setItem("hs1", score);
+
+		$("#hs1Name").text(localStorage.getItem("hn1"));
+		$("#hs1Score").text(localStorage.getItem("hs1"));
+		$("#hs2Name").text(localStorage.getItem("hn2"));
+		$("#hs2Score").text(localStorage.getItem("hs2"));
+		$("#hs3Name").text(localStorage.getItem("hn3"));
+		$("#hs3Score").text(localStorage.getItem("hs3"));
+	}
+	else if (score > localStorage.getItem("hs2") || localStorage.getItem("hs2") === null) {
+
+		if (localStorage.getItem("hs2") !== null || localStorage.getItem("hn2") !== null) {
+			localStorage.setItem(("hs3"), localStorage.getItem("hs2"));
+			localStorage.setItem(("hn3"), localStorage.getItem("hn2"));
+		}
+
+		localStorage.setItem(("hn2"), localStorage.getItem("playerName"));
+		localStorage.setItem("hs2", score);
+
+		$("#hs1Name").text(localStorage.getItem("hn1"));
+		$("#hs1Score").text(localStorage.getItem("hs1"));
+		$("#hs2Name").text(localStorage.getItem("hn2"));
+		$("#hs2Score").text(localStorage.getItem("hs2"));
+		$("#hs3Name").text(localStorage.getItem("hn3"));
+		$("#hs3Score").text(localStorage.getItem("hs3"));
+	}
+	else if (score > localStorage.getItem("hs3") || localStorage.getItem("hs3") === null) {
+
+		localStorage.setItem("hs3", score);
+		localStorage.setItem(("hn3"), localStorage.getItem("playerName"));
+
+		$("#hs1Name").text(localStorage.getItem("hn1"));
+		$("#hs1Score").text(localStorage.getItem("hs1"));
+		$("#hs2Name").text(localStorage.getItem("hn2"));
+		$("#hs2Score").text(localStorage.getItem("hs2"));
+		$("#hs3Name").text(localStorage.getItem("hn3"));
+		$("#hs3Score").text(localStorage.getItem("hs3"));
+	}
+
 	$("#gameOver").modal("toggle");
 	$("#numCoins").css("color", "red").text(score);
+
+	if (score === 1) {
+		$("#scoreValue").text(" Coin");
+	}
+	else {
+		$("#scoreValue").text(" Coins");
+	}
 
 	$("#exit").on("click", () => {
 		window.close();

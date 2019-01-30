@@ -52,7 +52,28 @@
 <body>
     <canvas id="game"></canvas>
 
-    <!-- Modal -->
+    
+    <!-- Game Start Modal -->
+    <div id="gameStart" class="modal fade modal-lg" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body text-center startGame">
+                <h4>Welcome!</h4>
+                <p>Collect coins to earn <strong>points </strong>&<strong> time</strong>! Don't fall!</p>
+                <hr/>
+                <p>
+                    <label for="playerName">Name:</label>
+                    <input type="text" id="playerName" maxlength="10" placeholder="Enter Your Name" style="padding: 2px"/>
+                </p>
+            </div>
+            <div class="modal-footer">
+            <button id="startGame" type="button" class="btn btn-success">Play</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Game Over Modal -->
     <div id="gameOver" class="modal fade modal-lg" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -63,12 +84,12 @@
             </button>
             </div>
             <div class="modal-body text-center">
-            <p><h3>You Scored <strong><span id="numCoins"></span></strong> Coins</h3></p>
+            <p><h3>You Scored <strong><span id="numCoins"></span></strong><span id="scoreValue"></span></h3></p>
             <hr/>
             <p><h5>High Scores:</h5></p>
-                <p id="hs1"><span id="hs1Name">SBJ</span> - <span id="hs1Score">99</span></p>
-                <p id="hs2"><span id="hs2Name">E C</span> - <span id="hs2Score">52</span></p>
-                <p id="hs3"><span id="hs3Name">BAW</span> - <span id="hs3Score">27</span></p>
+                <p id="hs1"><span id="hs1Name"></span> - <span id="hs1Score"></span></p>
+                <p id="hs2"><span id="hs2Name"></span> - <span id="hs2Score"></span></p>
+                <p id="hs3"><span id="hs3Name"></span> - <span id="hs3Score"></span></p>
             </div>
             <div class="modal-footer">
             <button id="exit" type="button" class="btn btn-secondary" data-dismiss="modal">Exit</button>
