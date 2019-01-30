@@ -15,9 +15,35 @@
             border: 2px solid black;
             background-color: #ffffff;
         }
+
+        #hs1 {
+            font-size: 2rem;
+            background: rgb(25, 95, 35);
+            border: 1px none;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+        }
+
+        #hs2 {
+            font-size: 1.5rem;
+            background: rgb(75, 145, 85);
+            border: 1px none;
+            border-radius: 5px;
+            color: white;
+        }
+
+        #hs3 {
+            font-size: 1.25rem;
+            background: rgb(115, 175, 125);
+            border: 1px none;
+            border-radius: 5px;
+            color: white;
+        }
     </style>
 
     <script src="scripts/graphics.js"></script>
+    <script src="scripts/particles.js"></script>
     <script src="scripts/platforms.js"></script>
     <script src="scripts/coins.js"></script>
     <script src="scripts/player.js"></script>
@@ -31,13 +57,18 @@
         <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-            <h5 class="modal-title">Game Over!</h5>
+            <h5 class="modal-title"><strong>Game Over!</strong></h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body text-center">
             <p><h3>You Scored <strong><span id="numCoins"></span></strong> Coins</h3></p>
+            <hr/>
+            <p><h5>High Scores:</h5></p>
+                <p id="hs1"><span id="hs1Name">SBJ</span> - <span id="hs1Score">99</span></p>
+                <p id="hs2"><span id="hs2Name">E C</span> - <span id="hs2Score">52</span></p>
+                <p id="hs3"><span id="hs3Name">BAW</span> - <span id="hs3Score">27</span></p>
             </div>
             <div class="modal-footer">
             <button id="exit" type="button" class="btn btn-secondary" data-dismiss="modal">Exit</button>

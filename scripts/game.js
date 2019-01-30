@@ -1,10 +1,10 @@
-// the player
+// Global Variables
 var player;
-
-// the platforms
 var platforms = new Array;
 var blocks = new Array;
 var coins = new Array;
+var particles = new Array;
+var randomColor = ["#000000", "#77523b", "#262626", "#ffb27f", "#444489"];
 var coinCnt = 0;
 var coinInt;
 var blockRandom = new Array;
@@ -14,6 +14,20 @@ var timer;
 var runGame;
 var countdown = 10;
 var fireGround;
+
+function getScores() {
+
+	$("#hs1Name").text(localStorage.getItem("hn1"));
+	$("#hs2Name").text(localStorage.getItem("hn2"));
+	$("#hs3Name").text(localStorage.getItem("hn3"));
+
+	$("#hs1Score").text(localStorage.getItem("hs1"));
+	$("#hs2Score").text(localStorage.getItem("hs2"));
+	$("#hs3Score").text(localStorage.getItem("hs3"));
+
+	var highNames = [localStorage.getItem("hn1"), localStorage.getItem("hn2"), localStorage.getItem("hn3")];
+	var highScores = [localStorage.getItem("hs1"), localStorage.getItem("hs2"), localStorage.getItem("hs3")];
+}
 
 // array to store all key presses
 var keysDown = new Array;
@@ -72,6 +86,16 @@ function update() {
 	time += 17;
 	// update player position
 	player.update();
+
+	// update particles' position
+	for (let i = 0; i < particles.length; i++) {
+
+		particles[i].update();
+
+		if (particles[i].size <= 0) {
+			particles.splice(i, 1);
+		}
+	}
 	
 	// check every platform
 	for (i = 0; i < blocks.length; i++) {
@@ -145,6 +169,11 @@ function update() {
 	}
 			
     if (player.y + player.height > fireGround.y + 16) {
+
+		// Populate Particles Array
+		for (let i = 0; i < 25; i++) {
+			particles.push(new Particle(player.x, player.y, randomColor[Math.floor(Math.random() * randomColor.length)]));
+		}
             
         player.jumping = false;
         player.velocity = 0;
