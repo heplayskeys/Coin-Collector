@@ -73,6 +73,8 @@ function main() {
 		
 	// draw the game
 	render(); // graphics.js
+
+	console.log("Hi");
 }
 
 // update game logic
