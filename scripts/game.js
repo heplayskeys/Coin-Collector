@@ -12,7 +12,7 @@ var score = 0;
 var time = 0;
 var timer;
 var runGame;
-var countdown = 10;
+var countdown = 15;
 var fireGround;
 var highScores = [];
 
@@ -281,12 +281,18 @@ function endGame() {
 	clearInterval(timer);
 	clearInterval(runGame);
 
-	highScores.push({numCoins: score, playerName: localStorage.getItem("playerName")});
-
+	if (score !== 0) {
+		highScores.push({numCoins: score, playerName: localStorage.getItem("playerName")});
+	}
+	else {
+		highScores.push({numCoins: null, playerName: null});
+	}
+	
 	highScores.sort(function(a, b){return b.numCoins - a.numCoins});
 	
 	localStorage.setItem("highScores", JSON.stringify(highScores));
 	localStorage.setItem("Score", score);
+	
 
 	$("#hs1Name").text(highScores[0].playerName);
 	$("#hs1Score").text(highScores[0].numCoins);
