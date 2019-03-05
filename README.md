@@ -1,2 +1,1 @@
-# DRAFT-CanvasGame
-Canvas Game Learning Trial
+# Coin Collector Canvas Game
